@@ -220,6 +220,34 @@ public class VistaFacturas extends javax.swing.JFrame {
                 Logger.getLogger(VistaFacturas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        
+        Object[][] filasDatos  = new Object[1][5];
+        Object[] nombreColumnas = {"id", "Fecha","Factura No","Cliente","Total"};
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.setColumnIdentifiers(nombreColumnas);
+        jTable1.setModel(modelo);
+        DataBaseConn db = new DataBaseConn();
+       
+        try {
+            List<modelo.Facturas> lista;
+            lista = db.mostrarFacturas();
+        
+        
+        for(modelo.Facturas f : lista){
+            
+            filasDatos[0][0] = f.getIdFactura();
+            filasDatos[0][1] = f.getFecha();
+            filasDatos[0][2] = f.getNumeroFactura();
+            filasDatos[0][3] = f.getNombreCliente();
+            filasDatos[0][4] = f.getTotal();
+            modelo.addRow(filasDatos[0]);
+        
+        }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(VistaFacturas.class.getName()).log(Level.SEVERE, null, ex);
+       
+         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
