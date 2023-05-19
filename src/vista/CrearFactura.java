@@ -311,12 +311,13 @@ public class CrearFactura extends javax.swing.JFrame {
        Object[][] filasDatos  = new Object[1][4];
        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         jTable1.setModel(modelo);
-            filasDatos[0][0] = "Camiseta";
+            if(!jComboBox2.getSelectedItem().toString().equals( "Select")){
+            filasDatos[0][0] = jComboBox2.getSelectedItem().toString();
             filasDatos[0][1] = "50000";
             filasDatos[0][2] = "1";
             filasDatos[0][3] = "50000";
             modelo.addRow(filasDatos[0]);
-        
+            }
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
