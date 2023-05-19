@@ -6,7 +6,7 @@ package javaapplication1;
  */
 
 
-import vista.NewJFrame;
+import vista.Inicio;
 
 
 
@@ -19,8 +19,8 @@ public class JavaApplication1 {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws ClassNotFoundException {
-       NewJFrame run1 = new NewJFrame();
+    public static void main(String[] args) {
+       Inicio run1 = new Inicio();
        run1.setVisible(true);
      
     }
