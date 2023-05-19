@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import modelo.Facturas;
 import java.sql.PreparedStatement;
 import java.sql.Date;
+import modelo.Productos;
 /**
  *
  * @author jorge
@@ -86,6 +87,40 @@ public class DataBaseConn {
             e.printStackTrace();
         } 
         return facturas;
+    }
+    
+    public List<Productos> ListarProductos() throws ClassNotFoundException{
+        List<Productos> productos = new ArrayList();
+        //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        String connectionUrl =
+                "jdbc:sqlserver://localhost:1433;"
+                + "database=prueba;"
+                + "user=jorge;"
+                + "password=12345678;"
+                + "encrypt=true;"
+                + "trustServerCertificate=true;"
+                + "loginTimeout=30;";
+
+        ResultSet resultSet = null;
+        try (Connection connection = DriverManager.getConnection(connectionUrl);
+                Statement statement = connection.createStatement();) {
+            // Create and execute a SELECT SQL statement.
+            String selectSql = "SELECT * from Productos";
+            resultSet = statement.executeQuery(selectSql);
+            // Print results from select statement
+            while (resultSet.next()) {
+                Productos producto = new Productos();
+                producto.idProducto = resultSet.getInt(1);
+                producto.Producto = resultSet.getString(2);
+                productos.add(producto);
+                System.out.println(resultSet.getString(1) + " " + resultSet.getString(2));
+            }
+            return productos;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        } 
+        return productos;
     }
     
     public void intertarFactura(Facturas f) throws ClassNotFoundException{
