@@ -6,7 +6,7 @@ package javaapplication1;
  */
 
 
-import vista.Inicio;
+import vista.VistaFacturas;
 
 
 
@@ -20,7 +20,7 @@ public class JavaApplication1 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       Inicio run1 = new Inicio();
+       VistaFacturas run1 = new VistaFacturas();
        run1.setVisible(true);
      
     }

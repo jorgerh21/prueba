@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import modelo.Detalles;
 import modelo.Facturas;
 import modelo.Productos;
 
@@ -22,6 +23,7 @@ public class CrearFactura extends javax.swing.JFrame {
 
     /**
      * Creates new form CrearFactura
+     * @param id
      */
     public CrearFactura() {
         initComponents();
@@ -32,8 +34,9 @@ public class CrearFactura extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(CrearFactura.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for(Productos p : lp){
-        jComboBox2.addItem(p.getProducto());
+        for(Productos p : lp){ 
+            
+        jComboBox2.addItem(String.valueOf(p.getIdProducto()));
         }
     }
 
@@ -46,8 +49,6 @@ public class CrearFactura extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -79,14 +80,6 @@ public class CrearFactura extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setText("Id");
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
 
         jLabel2.setText("Numero Factura");
 
@@ -136,7 +129,7 @@ public class CrearFactura extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Producto", "Valor", "Cantidad", "Total"
+                "idProducto", "Producto", "Valor", "Cantidad", "Total"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -149,6 +142,11 @@ public class CrearFactura extends javax.swing.JFrame {
         });
 
         jButton2.setText("Atras");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Insertar Producto");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -158,6 +156,11 @@ public class CrearFactura extends javax.swing.JFrame {
         });
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select" }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Calcular Factura");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -185,68 +188,58 @@ public class CrearFactura extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(jLabel4)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
+                            .addComponent(jLabel2))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jTextField9)
-                                    .addComponent(jTextField8)
-                                    .addComponent(jTextField7, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, 100, Short.MAX_VALUE)
-                                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                                    .addComponent(jTextField2)
-                                    .addComponent(jTextField10))
-                                .addGap(46, 46, 46))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jTextField9)
+                            .addComponent(jTextField8)
+                            .addComponent(jTextField7, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField6, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, 100, Short.MAX_VALUE)
+                            .addComponent(jFormattedTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .addComponent(jTextField2)
+                            .addComponent(jTextField10))
+                        .addGap(46, 46, 46)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(125, 125, 125)
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
+                        .addGap(26, 26, 26)
                         .addComponent(jButton3)
-                        .addGap(83, 83, 83)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jButton2)
-                                .addGap(12, 12, 12)))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(73, 73, 73))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton3)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(13, 13, 13)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton4))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(13, 13, 13)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2)
+                        .addGap(13, 13, 13))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3))
+                        .addGap(36, 36, 36)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -290,7 +283,7 @@ public class CrearFactura extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
                             .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         pack();
@@ -301,19 +294,31 @@ public class CrearFactura extends javax.swing.JFrame {
             // TODO add your handling code here:
             Facturas f = new Facturas();
             DataBaseConn con = new DataBaseConn();
-            f.setIdFactura(Integer.parseInt(jTextField1.getText()));
             f.setNumeroFactura(Integer.parseInt(jTextField2.getText()));
             f.setFecha(new Date());
             f.setTipoPago(jComboBox1.getSelectedItem().toString());
             f.setDocumentoCliente(Integer.parseInt(jTextField3.getText()));
-            f.setNombreCliente("Juan Camilo");
-            f.setSubtotal(1);
+            f.setNombreCliente(jTextField4.getText());
+            f.setSubtotal(Double.parseDouble(jTextField5.getText()));
             f.setDescuento(Integer.parseInt(jTextField6.getText()));
             f.setIva(Integer.parseInt(jTextField7.getText()));
-            f.setTotalDescuento(Integer.parseInt(jTextField7.getText()));
-            f.setTotalImpuesto(Integer.parseInt(jTextField7.getText()));
-            f.setTotal(Integer.parseInt(jTextField7.getText()));
-            con.intertarFactura(f);
+            f.setTotalDescuento(Double.parseDouble(jTextField8.getText()));
+            f.setTotalImpuesto(Double.parseDouble(jTextField9.getText()));
+            f.setTotal(Double.parseDouble(jTextField10.getText()));
+            int idinser = con.insertarFactura(f);
+            Object[][] filasDatos  = new Object[1][4];
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            jTable1.setModel(modelo);
+            for (int count = 0; count < modelo.getRowCount(); count++){
+            Detalles d = new Detalles();
+            d.setIdFactura(idinser);
+            d.setIdProducto(Integer.parseInt(modelo.getValueAt(count, 0).toString()));
+            d.setCantidad(Integer.parseInt(modelo.getValueAt(count, 3).toString()));
+            d.setPrecioUnitario(Double.parseDouble(modelo.getValueAt(count, 2).toString()));
+            con.insertarDetalle(d);
+            }
+            this.setVisible(false);
+            
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(CrearFactura.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -321,26 +326,49 @@ public class CrearFactura extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField8ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-       Object[][] filasDatos  = new Object[1][4];
+       Object[][] filasDatos  = new Object[1][5];
        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         jTable1.setModel(modelo);
             if(!jComboBox2.getSelectedItem().toString().equals( "Select")){
-            filasDatos[0][0] = jComboBox2.getSelectedItem().toString();
-            filasDatos[0][1] = "50000";
-            filasDatos[0][2] = "1";
-            filasDatos[0][3] = "";
+            String s = (String)jComboBox2.getSelectedItem();
+            filasDatos[0][0] = Integer.parseInt(s);    
+            filasDatos[0][1] = jComboBox2.getSelectedItem();
+            filasDatos[0][2] = "50000";
+            filasDatos[0][3] = "1";
+            filasDatos[0][4] = "";
             modelo.addRow(filasDatos[0]);
             }
+        double total =0;
+        double subtotal=0;
+        double cantidad=0;
+        double valor=0;
+        int descuento;
+        int iva;
+        double totalDescuento;
+        double totalImpuesto;
+        double granTotal;
+        for (int count = 0; count < modelo.getRowCount(); count++){
+        valor = Double.parseDouble(modelo.getValueAt(count, 2).toString());
+        cantidad = Double.parseDouble(modelo.getValueAt(count, 3).toString());
+        subtotal = valor * cantidad;        
+        modelo.setValueAt(subtotal,count, 4);
+        total += subtotal;
+        }
+        descuento = Integer.parseInt(jTextField6.getText());
+        iva = Integer.parseInt(jTextField7.getText());
+        totalImpuesto = total * iva/100;
+        totalDescuento = total * descuento/100;
+        jTextField5.setText(String.valueOf(total));
+        granTotal = total + totalImpuesto - totalDescuento;
+        jTextField8.setText(String.valueOf(totalDescuento));
+        jTextField9.setText(String.valueOf(totalImpuesto));
+        jTextField10.setText(String.valueOf(granTotal));
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -359,10 +387,10 @@ public class CrearFactura extends javax.swing.JFrame {
         double totalImpuesto;
         double granTotal;
         for (int count = 0; count < modelo.getRowCount(); count++){
-        valor = Double.parseDouble(modelo.getValueAt(count, 1).toString());
-        cantidad = Double.parseDouble(modelo.getValueAt(count, 2).toString());
+        valor = Double.parseDouble(modelo.getValueAt(count, 2).toString());
+        cantidad = Double.parseDouble(modelo.getValueAt(count, 3).toString());
         subtotal = valor * cantidad;        
-        modelo.setValueAt(subtotal,count, 3);
+        modelo.setValueAt(subtotal,count, 4);
         total += subtotal;
         }
         descuento = Integer.parseInt(jTextField6.getText());
@@ -374,7 +402,17 @@ public class CrearFactura extends javax.swing.JFrame {
         jTextField8.setText(String.valueOf(totalDescuento));
         jTextField9.setText(String.valueOf(totalImpuesto));
         jTextField10.setText(String.valueOf(granTotal));
+       
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -419,7 +457,6 @@ public class CrearFactura extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -433,7 +470,6 @@ public class CrearFactura extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;

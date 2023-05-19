@@ -12,23 +12,8 @@ public class Detalles {
     public int idDetalle;
     public int idProducto;
     public int idFactura;
-    public double Cantidad;
+    public int Cantidad;
     public double PrecioUnitario;
-
-    public Detalles(int idDetalle, int idProducto, int idFactura, double Cantidad, double PrecioUnitario) {
-        this.idDetalle = idDetalle;
-        this.idProducto = idProducto;
-        this.idFactura = idFactura;
-        this.Cantidad = Cantidad;
-        this.PrecioUnitario = PrecioUnitario;
-    }
-
-    public Detalles(int idProducto, int idFactura, double Cantidad, double PrecioUnitario) {
-        this.idProducto = idProducto;
-        this.idFactura = idFactura;
-        this.Cantidad = Cantidad;
-        this.PrecioUnitario = PrecioUnitario;
-    }
 
     public Detalles() {
     }
@@ -57,11 +42,11 @@ public class Detalles {
         this.idFactura = idFactura;
     }
 
-    public double getCantidad() {
+    public int getCantidad() {
         return Cantidad;
     }
 
-    public void setCantidad(double Cantidad) {
+    public void setCantidad(int Cantidad) {
         this.Cantidad = Cantidad;
     }
 
@@ -77,6 +62,8 @@ public class Detalles {
     public String toString() {
         return "Detalles{" + "idDetalle=" + idDetalle + ", idProducto=" + idProducto + ", idFactura=" + idFactura + ", Cantidad=" + Cantidad + ", PrecioUnitario=" + PrecioUnitario + '}';
     }
+
+   
     
     
 }
