@@ -332,13 +332,20 @@ public class CrearFactura extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+       DataBaseConn con = new DataBaseConn();
        Object[][] filasDatos  = new Object[1][5];
        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         jTable1.setModel(modelo);
             if(!jComboBox2.getSelectedItem().toString().equals( "Select")){
             String s = (String)jComboBox2.getSelectedItem();
-            filasDatos[0][0] = Integer.parseInt(s);    
-            filasDatos[0][1] = jComboBox2.getSelectedItem();
+            filasDatos[0][0] = Integer.parseInt(s);  
+            String nombreProducto="";
+           try {
+               nombreProducto = con.nombreProducto(Integer.parseInt(s));
+           } catch (ClassNotFoundException ex) {
+               Logger.getLogger(CrearFactura.class.getName()).log(Level.SEVERE, null, ex);
+           }
+            filasDatos[0][1] = nombreProducto;
             filasDatos[0][2] = "50000";
             filasDatos[0][3] = "1";
             filasDatos[0][4] = "";

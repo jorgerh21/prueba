@@ -44,9 +44,9 @@ public class VerFactura extends javax.swing.JFrame {
             jTextField2.setText("" + f.getNumeroFactura());
             jTextField3.setText("" + f.getDocumentoCliente());
             jTextField4.setText("" + f.getNombreCliente());
-            jTextField5.setText("" + f.getDescuento());
-            jTextField6.setText("" + f.getIva());
-            jTextField7.setText("" + f.getSubtotal());
+            jTextField5.setText("" + f.getSubtotal());
+            jTextField6.setText("" + f.getDescuento());
+            jTextField7.setText("" + f.getIva());
             jTextField8.setText("" + f.getTotalDescuento());
             jTextField9.setText("" + f.getTotalImpuesto());
             jTextField10.setText("" + f.getTotal());
@@ -54,8 +54,15 @@ public class VerFactura extends javax.swing.JFrame {
             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
             jTable1.setModel(modelo);
             for(modelo.Detalles d : dt){
-            filasDatos[0][0] = d.getIdDetalle();
-            filasDatos[0][1] = d.getIdFactura();
+            String nombreProducto="";
+           try {
+              
+               nombreProducto = db.nombreProducto(d.getIdProducto());
+           } catch (ClassNotFoundException ex) {
+               Logger.getLogger(CrearFactura.class.getName()).log(Level.SEVERE, null, ex);
+           }
+            filasDatos[0][0] = d.getIdProducto();  
+            filasDatos[0][1] = nombreProducto;
             filasDatos[0][2] = d.getCantidad();
             filasDatos[0][3] = d.getPrecioUnitario();
             filasDatos[0][4] = d.getCantidad() * d.getPrecioUnitario();
@@ -80,6 +87,7 @@ public class VerFactura extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -110,6 +118,7 @@ public class VerFactura extends javax.swing.JFrame {
         jComboBox2 = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -181,6 +190,13 @@ public class VerFactura extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setText("calcular factura");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -228,7 +244,11 @@ public class VerFactura extends javax.swing.JFrame {
                                     .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(147, 147, 147)
+                                .addComponent(jButton4))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(159, 159, 159)
                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -305,9 +325,11 @@ public class VerFactura extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel12))
-                        .addContainerGap(19, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 8, Short.MAX_VALUE)
+                        .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(22, 22, 22))))
         );
@@ -363,20 +385,87 @@ public class VerFactura extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        DataBaseConn con = new DataBaseConn();
         Object[][] filasDatos  = new Object[1][5];
-       DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         jTable1.setModel(modelo);
-            if(!jComboBox2.getSelectedItem().toString().equals( "Select")){
-            String s = (String)jComboBox2.getSelectedItem();
-            filasDatos[0][0] = Integer.parseInt(s);    
-            filasDatos[0][1] = jComboBox2.getSelectedItem();
+            if(!jComboBox2.getSelectedItem().toString().equals( "Select")){      
+           String nombreProducto="";
+           String s = (String)jComboBox2.getSelectedItem();
+           try {
+              
+               nombreProducto = con.nombreProducto(Integer.parseInt(s));
+           } catch (ClassNotFoundException ex) {
+               Logger.getLogger(CrearFactura.class.getName()).log(Level.SEVERE, null, ex);
+           }
+            filasDatos[0][0] = Integer.parseInt(s);  
+            filasDatos[0][1] = nombreProducto;
             filasDatos[0][2] = "50000";
             filasDatos[0][3] = "1";
             filasDatos[0][4] = "";
             modelo.addRow(filasDatos[0]);
             }
+            
+        double total =0;
+        double subtotal=0;
+        double cantidad=0;
+        double valor=0;
+        int descuento;
+        int iva;
+        double totalDescuento;
+        double totalImpuesto;
+        double granTotal;
+        for (int count = 0; count < modelo.getRowCount(); count++){
+        valor = Double.parseDouble(modelo.getValueAt(count, 2).toString());
+        cantidad = Double.parseDouble(modelo.getValueAt(count, 3).toString());
+        subtotal = valor * cantidad;        
+        modelo.setValueAt(subtotal,count, 4);
+        total += subtotal;
+        }
+        descuento = Integer.parseInt(jTextField6.getText());
+        iva = Integer.parseInt(jTextField7.getText());
+        totalImpuesto = total * iva/100;
+        totalDescuento = total * descuento/100;
+        jTextField5.setText(String.valueOf(total));
+        granTotal = total + totalImpuesto - totalDescuento;
+        jTextField8.setText(String.valueOf(totalDescuento));
+        jTextField9.setText(String.valueOf(totalImpuesto));
+        jTextField10.setText(String.valueOf(granTotal));
          
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+          // TODO add your handling code here:
+        Object[][] filasDatos  = new Object[1][4];
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        jTable1.setModel(modelo);
+        double total =0;
+        double subtotal=0;
+        double cantidad=0;
+        double valor=0;
+        int descuento;
+        int iva;
+        double totalDescuento;
+        double totalImpuesto;
+        double granTotal;
+        for (int count = 0; count < modelo.getRowCount(); count++){
+        valor = Double.parseDouble(modelo.getValueAt(count, 2).toString());
+        cantidad = Double.parseDouble(modelo.getValueAt(count, 3).toString());
+        subtotal = valor * cantidad;        
+        modelo.setValueAt(subtotal,count, 4);
+        total += subtotal;
+        }
+        descuento = Integer.parseInt(jTextField6.getText());
+        iva = Integer.parseInt(jTextField7.getText());
+        totalImpuesto = total * iva/100;
+        totalDescuento = total * descuento/100;
+        jTextField5.setText(String.valueOf(total));
+        granTotal = total + totalImpuesto - totalDescuento;
+        jTextField8.setText(String.valueOf(totalDescuento));
+        jTextField9.setText(String.valueOf(totalImpuesto));
+        jTextField10.setText(String.valueOf(granTotal));
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -414,9 +503,11 @@ public class VerFactura extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JFormattedTextField jFormattedTextField1;

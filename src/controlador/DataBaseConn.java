@@ -125,6 +125,38 @@ public class DataBaseConn {
         return productos;
     }
     
+    public String nombreProducto(int id) throws ClassNotFoundException{
+        //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        String nombreProducto="";
+        String connectionUrl =
+                "jdbc:sqlserver://localhost:1433;"
+                + "database=prueba;"
+                + "user=jorge;"
+                + "password=12345678;"
+                + "encrypt=true;"
+                + "trustServerCertificate=true;"
+                + "loginTimeout=30;";
+
+        ResultSet resultSet = null;
+        try (Connection connection = DriverManager.getConnection(connectionUrl);
+                Statement statement = connection.createStatement();) {
+            // Create and execute a SELECT SQL statement.
+            String selectSql = "SELECT * from Productos where idProducto=" + id;
+            resultSet = statement.executeQuery(selectSql);
+            // Print results from select statement
+            while (resultSet.next()) {
+              
+                nombreProducto = resultSet.getString(2);
+               
+            }
+            return nombreProducto;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        } 
+        return nombreProducto;
+    }
+    
     public List<Detalles> ListarDetalles(int id) throws ClassNotFoundException{
         List<Detalles> detalles = new ArrayList();
         //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -264,7 +296,7 @@ public class DataBaseConn {
                 + "trustServerCertificate=true;"
                 + "loginTimeout=30;";
         
-        int idFactura =f.getIdFactura();
+        int idFactura = id;
         int NumeroFactura =f.getNumeroFactura();
         Date Fecha = new Date(2020,12,12);
         String TipoPago =f.getTipoPago();
@@ -277,27 +309,31 @@ public class DataBaseConn {
         double TotalImpuesto=f.getTotalImpuesto();
         double Total=f.getTotal();
 
-        String insertSql = "UPDATE Facturas SET ( NumeroFactura, Fecha,TipodePago ,DocumentoCliente ,NombreCliente, Subtotal, Descuento, IVA, TotalDescuento, TotalImpuesto,Total ) VALUES "
-                + "( "+ NumeroFactura +", '"+ Fecha +"', '"+ TipoPago +"', "+ DocumentoCliente +", '"+ NombreCliente +"' , "+ Subtotal +", "+ Descuento +", "+ Iva +", "+ TotalDescuento +", "+ TotalImpuesto +", "+ Total +");";
-
+        String updateSQL = "UPDATE Facturas SET "
+                + "NumeroFactura=" + NumeroFactura
+                + ", Fecha="+ Fecha
+                + ",TipodePago="+ TipoPago 
+                + ",DocumentoCliente=" + DocumentoCliente
+                + ",NombreCliente= " + NombreCliente
+                + ",Subtotal= " + Subtotal
+                + ",Descuento= " + Descuento
+                + ",IVA=" + Iva
+                + ",TotalDescuento= " + TotalDescuento
+                + ",TotalImpuesto=" + TotalImpuesto                
+                + ",Total= " + Total
+                + " where idFactura=" + id;
+                
         ResultSet resultSet = null;
 
-        try (Connection connection = DriverManager.getConnection(connectionUrl);
-                PreparedStatement prepsInsertProduct = connection.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS);) {
-
+      try (Connection connection = DriverManager.getConnection(connectionUrl);
+          PreparedStatement prepsInsertProduct = connection.prepareStatement(updateSQL, Statement.RETURN_GENERATED_KEYS);) {
             prepsInsertProduct.execute();
-            // Retrieve the generated key from the insert.
-            resultSet = prepsInsertProduct.getGeneratedKeys();
-
-            // Print the ID of the inserted row.
-            while (resultSet.next()) {
-                System.out.println("Generated: " + resultSet.getString(1));
             }
-        }
-        // Handle any errors that may have occurred.
-        catch (Exception e) {
+        catch (SQLException e) {
             e.printStackTrace();
-        }
+        } 
+        // Handle any errors that may have occurred.
+       
     }
     
      public void borrarFactura(int id) throws ClassNotFoundException{
